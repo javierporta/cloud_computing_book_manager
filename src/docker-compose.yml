@@ -1,0 +1,19 @@
+---
+version: "3"
+services:
+    database:
+        image: mongo
+    application:
+        image: bookmanager_app
+        build: 
+            context: ./
+            dockerfile: Dockerfile
+        volumes:
+            - ./backend:/var/app/backend #mapping from physical folder to container
+            - ./frontend:/var/app/frontend
+        ports:
+            - "8080:10000" #hostPort:containerPort
+        depends_on: 
+           - "database"
+        environment:
+            - GR_KEY=yf2sDMjXbEAOj6LQC7IQdg 
