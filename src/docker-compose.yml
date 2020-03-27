@@ -12,7 +12,7 @@ services:
             - ./backend:/var/app/backend #mapping from physical folder to container
             - ./frontend:/var/app/frontend
         ports:
-            - "8080:10000" #hostPort:containerPort
+            - "10000:10000" #hostPort:containerPort
         depends_on: 
            - "database"
         environment:
