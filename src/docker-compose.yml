@@ -3,17 +3,36 @@ version: "3"
 services:
     database:
         image: mongo
-    application:
-        image: bookmanager_app
-        build: 
-            context: ./
+    frontend:
+        image: bookmanager_frontend
+        build:
+            context: ./frontend
             dockerfile: Dockerfile
         volumes:
-            - ./backend:/var/app/backend #mapping from physical folder to container
-            - ./frontend:/var/app/frontend
+            - ./frontend:/usr/share/nginx/html
+        ports:
+            - "8081:80"
+    history_service:
+        image: bookmanager_history_service
+        build: 
+            context: ./services/history
+            dockerfile: Dockerfile
+        volumes:
+            - ./services/history:/var/app/src #mapping from physical folder to container
         ports:
             - "10000:10000" #hostPort:containerPort
         depends_on: 
            - "database"
+    search_service:
+        image: bookmanager_search_service
+        build: 
+            context: ./services/search
+            dockerfile: Dockerfile
+        volumes:
+            - ./services/search:/var/app/src #mapping from physical folder to container
+        ports:
+            - "10001:10000" #hostPort:containerPort
+        depends_on: 
+            - "database"
         environment:
             - GR_KEY=yf2sDMjXbEAOj6LQC7IQdg 

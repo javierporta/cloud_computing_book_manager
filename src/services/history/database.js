@@ -24,21 +24,6 @@ const connect = () => {
   })
 }
 
-
-const insertBookSearch = (db, bookSearch) => {
-  return new Promise((resolve, reject) => {
-
-    const collection = db.collection('searches');
-    collection.insertOne(bookSearch, (err, result) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve(result);
-    });
-  });
-}
-
-
 const getHistory = (db) => {
   return new Promise((resolve, reject) => {
     const collection = db.collection('searches');
@@ -53,6 +38,5 @@ const getHistory = (db) => {
 
 module.exports = {
   connect: connect,
-  insertBookSearch: insertBookSearch,
   getHistory: getHistory
 }

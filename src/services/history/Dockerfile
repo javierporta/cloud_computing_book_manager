@@ -4,6 +4,8 @@ FROM node
 
 RUN mkdir -p /var/app
 
+RUN mkdir -p /var/app/src
+
 WORKDIR /var/app
 
 COPY package.json ./
@@ -17,7 +19,7 @@ EXPOSE 10000
 # docker build end
 
 # docker run start
-CMD ["nodemon", "backend/index.js"]
+CMD ["nodemon", "src/index.js"]
 
 # nodemon backend/index.js
 

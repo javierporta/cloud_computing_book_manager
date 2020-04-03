@@ -1,4 +1,4 @@
-const insertSearchResult = (book,table) => {
+const insertSearchResult = (book, table) => {
   let row = document.createElement('tr');
   let year = document.createElement('td');
   year.innerHTML = book.year;
@@ -36,12 +36,12 @@ const insertHistoryResult = (result, tableResults, tableSearch) => {
   let button = document.createElement('button');
   button.innerHTML = "Show";
   //button.setAttribute('data-index');
-  button.addEventListener('click',(event)=>{
+  button.addEventListener('click', (event) => {
     event.preventDefault();
     let tbody = tableSearch.querySelector('tbody');
     tbody.innerHTML = '';
-    for(let book of result.data){
-      insertSearchResult(book,tbody);
+    for (let book of result.data) {
+      insertSearchResult(book, tbody);
     }
     tableSearch.style.display = 'block';
   });
@@ -55,45 +55,45 @@ const insertHistoryResult = (result, tableResults, tableSearch) => {
 const searchListener = (e) => {
   e.preventDefault();
   let searchTerms = document.querySelector("#search").value;
-  
-  axios.post('/api/search',{search:searchTerms})
-  .then(response => {
-    console.log(response.data);
-    let table = document.querySelector('#search_results');
-    let tbody = table.querySelector('tbody');
-    tbody.innerHTML = '';
-    for(let book of response.data){
-      insertSearchResult(book,tbody);
-    }
-    table.style.display = 'block';
-  })
-  .catch(error => {
-    console.log(error)
-  })
+
+  axios.post('http://localhost:10001/api/search', { search: searchTerms })
+    .then(response => {
+      console.log(response.data);
+      let table = document.querySelector('#search_results');
+      let tbody = table.querySelector('tbody');
+      tbody.innerHTML = '';
+      for (let book of response.data) {
+        insertSearchResult(book, tbody);
+      }
+      table.style.display = 'block';
+    })
+    .catch(error => {
+      console.log(error)
+    })
 }
 
 const populateHistory = async () => {
-  let historyResults = await axios.get('/api/history');
-  if(historyResults){
+  let historyResults = await axios.get('http://localhost:10000/api/history');
+  if (historyResults) {
     let tableResults = document.querySelector('#history_table');
     let tableSearch = document.querySelector('#search_results');
-    for(let result of historyResults.data){
-      insertHistoryResult(result,tableResults,tableSearch);
+    for (let result of historyResults.data) {
+      insertHistoryResult(result, tableResults, tableSearch);
     }
   }
 }
 
 
-(()=>{
+(() => {
   console.log("JS Loaded");
- 
+
   let search_form = document.querySelector("#search_form");
-  if(search_form){
-    search_form.addEventListener('submit',searchListener);
+  if (search_form) {
+    search_form.addEventListener('submit', searchListener);
   }
 
   let history_results = document.querySelector('#history_table');
-  if(history_results){
+  if (history_results) {
     populateHistory();
   }
 
